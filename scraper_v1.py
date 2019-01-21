@@ -1,7 +1,7 @@
 import json
 import mechanize
 import requests
-
+import argparse
 import os
 
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
@@ -51,13 +51,13 @@ def fetch_weather_data(br, station_data):
     print(resp_content)
 
 
-def main():
+def main(args):
 
     # init mechanize
     br = mechanize.Browser()
 
     # get user input
-    user_input = "Toronto, ON"
+    user_input = vars(args).get("location")[1]
 
     # get lat and long for search
     geocode = get_geocode(user_input)
@@ -71,4 +71,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('location', metavar='S', type=str, nargs='+', default='',
+                        help='Address or latititude and longitude (xx.xx; yy.xx)')
+
+    args = parser.parse_args()
+    main(args)
+
+    # run pipenv run python scraper_v1.py location "Toronto, On"
