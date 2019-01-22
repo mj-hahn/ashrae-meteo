@@ -78,5 +78,3 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
-
-    # run pipenv run python scraper_v1.py location "Toronto, On"
