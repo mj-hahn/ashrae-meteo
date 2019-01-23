@@ -48,7 +48,21 @@ def fetch_weather_data(br, station_data):
     new_request = mechanize.Request(url=url, data=request_params, method="POST")
     resp = br.open(new_request)
     resp_content = resp.read()
-    print(resp_content)
+    resp = resp_content.decode('utf-8-sig') # resp contains ufeff, convert to unicode.
+    j_resp = json.loads(resp)
+
+    stations = j_resp.get('meteo_stations', [])
+    station = stations[0]\
+    
+    # get cooling_DB_MCWB_2_DB
+    # n-year_return_period_values_of_extreme_DB_50_min
+
+    weather_data = {
+        "cooling_DB_MCWB_2_DB": station.get('cooling_DB_MCWB_2_DB', 'n/a'),
+        "n-year_return_period_values_of_extreme_DB_50_min": station.get('n-year_return_period_values_of_extreme_DB_50_min', 'n/a')
+    }
+    return weather_data
+
 
 
 def main(args):
@@ -64,10 +78,11 @@ def main(args):
 
     # get location data
     station = fetch_station(br, geocode)
-    print(station)
 
     # get ashrae data
-    fetch_weather_data(br, station)
+    data = fetch_weather_data(br, station)
+
+    print(json.dumps(data, indent=4))
 
 
 if __name__ == "__main__":
@@ -78,3 +93,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
+
