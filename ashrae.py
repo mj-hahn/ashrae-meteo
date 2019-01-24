@@ -3,6 +3,11 @@ import mechanize
 import requests
 import argparse
 import os
+from openpyxl import load_workbook
+
+EXCEL_INPUT_CELL = ""  # e.g. "A1", "C12", etc.
+EXCEL_OUTPUT_CELL_1 = ""
+EXCEL_OUTPUT_CELL_2 = ""
 
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
@@ -45,10 +50,12 @@ def fetch_weather_data(br, station_data):
         "si_ip": "SI"
     }
     url = "http://ashrae-meteo.info/request_meteo_parametres.php"
-    new_request = mechanize.Request(url=url, data=request_params, method="POST")
+    new_request = mechanize.Request(
+        url=url, data=request_params, method="POST")
     resp = br.open(new_request)
     resp_content = resp.read()
-    resp = resp_content.decode('utf-8-sig') # resp contains ufeff, convert to unicode.
+    # resp contains ufeff, convert to unicode.
+    resp = resp_content.decode('utf-8-sig')
     j_resp = json.loads(resp)
 
     stations = j_resp.get('meteo_stations', [])
@@ -61,28 +68,49 @@ def fetch_weather_data(br, station_data):
     return weather_data
 
 
+def read_excel_location(excel_filename):
+    wb = load_workbook(excel_filename)
+    ws = wb.active  # or, specify the workboo name with: ws = wb['sheet name']
+    return ws[EXCEL_INPUT_CELL].value
+
+
+def write_excel_weather(excel_filename, val_1, val_2):
+    wb = load_workbook(excel_filename)
+    ws = wb.active  # or, specify the workboo name with: ws = wb['sheet name']
+    ws[EXCEL_OUTPUT_CELL_1] = val_1
+    ws[EXCEL_OUTPUT_CELL_2] = val_2
+    wb.save(excel_filename)
+    return
+
+
+def get_excel_filename():
+    excel_filename = None
+    wd = os.getcwd()
+    files = os.listdir(wd)
+    for f in files:
+        if '.xlsx' in f:
+            excel_filename = f
+    return excel_filename
+
+
 def main(args):
 
-    # init mechanize
-    br = mechanize.Browser()
+    br = mechanize.Browser()  # init mechanize
 
-    # get user input
-    user_input = vars(args).get("location")[1]
-
-    # get lat and long for search
-    geocode = get_geocode(user_input)
-
-    # get location data
+    excel_filename = get_excel_filename()
+    location = read_excel_location(excel_filename)
+    geocode = get_geocode(location)
     station = fetch_station(br, geocode)
+    weather_data = fetch_weather_data(br, station)
 
-    # get ashrae data
-    data = fetch_weather_data(br, station)
-
-    print(json.dumps(data, indent=4))
+    val_1 = weather_data['cooling_DB_MCWB_2_DB']
+    val_2 = weather_data['n-year_return_period_values_of_extreme_DB_50_min']
+    write_excel_weather(excel_filename, val_1, val_2)
 
 
 if __name__ == "__main__":
 
+    # may need parser to read excel filename
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('location', metavar='S', type=str, nargs='+', default='',
                         help='Address or latititude and longitude (xx.xx; yy.xx)')

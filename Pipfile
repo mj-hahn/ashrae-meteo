@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 mechanize = "*"
 requests = "*"
+openpyxl = "*"
 
 [requires]
 python_version = "2.7"
