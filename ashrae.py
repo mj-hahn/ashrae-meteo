@@ -1,7 +1,8 @@
-import os
 import json
-import requests
 import mechanize
+import requests
+import argparse
+import os
 from openpyxl import load_workbook
 
 EXCEL_INPUT_CELL = ""  # e.g. "A1", "C12", etc.
@@ -109,4 +110,10 @@ def main(args):
 
 if __name__ == "__main__":
 
+    # may need parser to read excel filename
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('location', metavar='S', type=str, nargs='+', default='',
+                        help='Address or latititude and longitude (xx.xx; yy.xx)')
+
+    args = parser.parse_args()
     main(args)
