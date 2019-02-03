@@ -92,21 +92,24 @@ def get_excel_filename():
     return excel_filename
 
 
-def main(args):
+def main():
 
     br = mechanize.Browser()  # init mechanize
 
-    excel_filename = get_excel_filename()
-    location = read_excel_location(excel_filename)
+    # excel_filename = get_excel_filename()
+    # location = read_excel_location(excel_filename)
+    location = "Toronto, ON"
     geocode = get_geocode(location)
     station = fetch_station(br, geocode)
     weather_data = fetch_weather_data(br, station)
 
-    val_1 = weather_data['cooling_DB_MCWB_2_DB']
-    val_2 = weather_data['n-year_return_period_values_of_extreme_DB_50_min']
-    write_excel_weather(excel_filename, val_1, val_2)
+    print(json.dumps(weather_data, indent=4))
+
+    # val_1 = weather_data['cooling_DB_MCWB_2_DB']
+    # val_2 = weather_data['n-year_return_period_values_of_extreme_DB_50_min']
+    # write_excel_weather(excel_filename, val_1, val_2)
 
 
 if __name__ == "__main__":
 
-    main(args)
+    main()
