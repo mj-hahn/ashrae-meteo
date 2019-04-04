@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "07cd0acaed1e7b41562975d0d992ef96d4d3dc9845271eaf6665b8a593dfa3be"
+            "sha256": "bf8e9c9c09b5c2d26a67db65fdd8cbb81e6edac261bf992cfbbfc21b1e8481f2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,10 +18,10 @@
     "default": {
         "certifi": {
             "hashes": [
-                "sha256:47f9c83ef4c0c621eaef743f133f09fa8a74a9b75f037e8624f83bd1b6626cb7",
-                "sha256:993f830721089fef441cdfeb4b2c8c9df86f0c63239f06bd025a76a7daddb033"
+                "sha256:59b7658e26ca9c7339e00f8f4636cdfe59d34fa37b9b04f6f9e9926b3cece1a5",
+                "sha256:b26104d6835d1f5e49452a26eb2ff87fe7090b89dfcaee5ea2212697e1e1d7ae"
             ],
-            "version": "==2018.11.29"
+            "version": "==2019.3.9"
         },
         "chardet": {
             "hashes": [
@@ -59,18 +59,18 @@
         },
         "mechanize": {
             "hashes": [
-                "sha256:6eb35881e08436dfba2db00abec98fe948ec25122edee77589ef060fc747e595",
-                "sha256:8082da10c70e6f94622229b74c0f228c9ea086460d0fd76f72072806eb3bd639"
+                "sha256:88bbf7cf7aa8d54ac50e9eca16fbd2cbc97d7fd4d4f57985b20066f9063ece2b",
+                "sha256:8954081ef3149794920f0b9ead8af6927059b6ac76d81abc8a4d6366c6fa86ba"
             ],
             "index": "pypi",
-            "version": "==0.4.0"
+            "version": "==0.4.1"
         },
         "openpyxl": {
             "hashes": [
-                "sha256:a5285901fff7b99a011462f18506a4fbfe4055191149ff42f59345828f8cf7b2"
+                "sha256:1d2af392cef8c8227bd2ac3ebe3a28b25aba74fd4fa473ce106065f0b73bfe2e"
             ],
             "index": "pypi",
-            "version": "==2.5.14"
+            "version": "==2.6.2"
         },
         "requests": {
             "hashes": [
@@ -102,5 +102,19 @@
             "version": "==0.5.1"
         }
     },
-    "develop": {}
+    "develop": {
+        "autopep8": {
+            "hashes": [
+                "sha256:33d2b5325b7e1afb4240814fe982eea3a92ebea712869bfd08b3c0393404248c"
+            ],
+            "index": "pypi",
+            "version": "==1.4.3"
+        },
+        "pycodestyle": {
+            "hashes": [
+                "sha256:95a2219d12372f05704562a14ec30bc76b05a5b297b21a5dfe3f6fac3491ae56"
+            ],
+            "version": "==2.5.0"
+        }
+    }
 }
