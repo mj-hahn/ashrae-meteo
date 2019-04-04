@@ -38,6 +38,15 @@ def fetch_station(geocode):
     return selected_station
 
 
+def remove_bom(text):
+    resp_json = None
+    resp_str = json.dumps(text)
+    resp_loaded = json.loads(resp_str.decode('utf-8-sig'))
+    without_bom = resp_loaded[1:-3]
+    resp_json = json.loads(without_bom)
+    return resp_json
+
+
 def fetch_weather_data(station_data):
     request_params = {
         "wmo": station_data.get("wmo"),
@@ -46,16 +55,7 @@ def fetch_weather_data(station_data):
     }
     url = "http://ashrae-meteo.info/request_meteo_parametres.php"
     resp = requests.post(url, data=request_params)
-
-    # the response contains a BOM, which makes JSON parsing difficult. Manually remove the BOM character
-    resp_text = resp.text
-    resp_clean = resp_text[:-3]
-    resp_json = json.dumps(resp_clean)
-    resp_loaded = json.loads(resp_json.decode('utf-8-sig'))
-    without_bom = resp_loaded[1:]
-    resp_json = json.loads(without_bom)
-
-    # grab the values, and handle encoding.
+    resp_json = remove_bom(resp.text)
     stations = resp_json.get('meteo_stations', [])
     station = stations[0]
     weather_data = {
@@ -97,16 +97,19 @@ def excel_export(data):
 
 
 def main():
+    # remove comments for production use. 
     # excel_filename = get_excel_filename()
     # location = read_excel_location(excel_filename)
-    location = "Toronto, ON" # only hardcoded for dev testing.
+
+    location = "Toronto, ON"  # only hardcoded for dev testing.
 
     geocode = get_geocode(location)
     station = fetch_station(geocode)
     weather_data = fetch_weather_data(station)
 
     print(json.dumps(weather_data, indent=4))
-
+    
+    # remove comment for production use. 
     # excel_export(weather_data)
 
 
