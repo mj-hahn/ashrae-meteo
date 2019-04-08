@@ -67,13 +67,13 @@ def fetch_weather_data(station_data):
 
 def read_excel_location(excel_filename):
     wb = load_workbook(excel_filename)
-    ws = wb.active  # or, specify the workboo name with: ws = wb['sheet name']
+    ws = wb.active  # or, specify the workbook name with: ws = wb['sheet name']
     return ws[EXCEL_INPUT_CELL].value
 
 
 def write_excel_weather(excel_filename, val_1, val_2):
     wb = load_workbook(excel_filename)
-    ws = wb.active  # or, specify the workboo name with: ws = wb['sheet name']
+    ws = wb.active  # or, specify the workbook name with: ws = wb['sheet name']
     ws[EXCEL_OUTPUT_CELL_1] = val_1
     ws[EXCEL_OUTPUT_CELL_2] = val_2
     wb.save(excel_filename)
@@ -90,27 +90,23 @@ def get_excel_filename():
     return excel_filename
 
 
-def excel_export(data):
+def excel_export(excel_filename, data):
     val_1 = data['cooling_DB_MCWB_2_DB']
     val_2 = data['n-year_return_period_values_of_extreme_DB_50_min']
     write_excel_weather(excel_filename, val_1, val_2)
 
 
 def main():
-    # remove comments for production use. 
-    # excel_filename = get_excel_filename()
-    # location = read_excel_location(excel_filename)
 
-    location = "Toronto, ON"  # only hardcoded for dev testing.
+    excel_filename = get_excel_filename()
+    location = read_excel_location(excel_filename)
+    # location = "Toronto, ON"  # only hardcoded for dev testing.
 
     geocode = get_geocode(location)
     station = fetch_station(geocode)
     weather_data = fetch_weather_data(station)
-
-    print(json.dumps(weather_data, indent=4))
     
-    # remove comment for production use. 
-    # excel_export(weather_data)
+    excel_export(excel_filename, weather_data)
 
 
 if __name__ == "__main__":
