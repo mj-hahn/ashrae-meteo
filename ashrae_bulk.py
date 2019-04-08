@@ -90,7 +90,7 @@ def get_excel_filenames():
     return excel_filenames  
 
 
-def excel_export(data):
+def excel_export(excel_filename, data):
     val_1 = data['cooling_DB_MCWB_2_DB']
     val_2 = data['n-year_return_period_values_of_extreme_DB_50_min']
     write_excel_weather(excel_filename, val_1, val_2)
@@ -103,7 +103,7 @@ def main():
         geocode = get_geocode(location)
         station = fetch_station(geocode)
         weather_data = fetch_weather_data(station)
-        excel_export(weather_data)
+        excel_export(f, weather_data)
 
 
 if __name__ == "__main__":
